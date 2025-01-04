@@ -10,12 +10,13 @@ class GuitarTabCreator:
 
     def display_tab(self):
         for i, string in enumerate(self.strings):
-            row_text = f"{string} |"
+            row_text = f"{string}|"
             for col, fret in enumerate(self.tab[string]):
                 if i == self.current_row and col == self.current_col:
+                    # Replace the dashes temporarily with brackets for the highlighted note
                     row_text += f"[{fret}]"
                 else:
-                    row_text += f"{fret}"  # Continuous dashes without spaces
+                    row_text += f"{fret}"
 
             # Update the label for the current string
             self.labels[i].config(
@@ -28,18 +29,20 @@ class GuitarTabCreator:
         if not fret.isdigit():
             return
 
-        fret_str = fret.ljust(3, '-')
+        fret_str = fret.center(3, '-')  # Center the fret within the defined space
         current_string = self.strings[self.current_row]
         while len(self.tab[current_string]) <= self.current_col:
             for string in self.strings:
                 self.tab[string].append("---")
 
         self.tab[current_string][self.current_col] = fret_str
+        self.display_tab()  # Immediately update the display to show the new note
 
     def delete_fret(self):
         current_string = self.strings[self.current_row]
         if self.current_col < len(self.tab[current_string]):
             self.tab[current_string][self.current_col] = "---"
+        self.display_tab()  # Immediately update the display to reflect the deletion
 
     def move_cursor(self, direction):
         if direction == "up":
