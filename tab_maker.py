@@ -12,16 +12,16 @@ class GuitarTabCreator:
         for i, string in enumerate(self.strings):
             row_text = f"{string}|"
             for col, fret in enumerate(self.tab[string]):
-                if i == self.current_row and col == self.current_col:
-                    # Replace the dashes temporarily with brackets for the highlighted note
-                    row_text += f"[{fret}]"
+                if col == self.current_col:
+                    # Add spaces around the current column for alignment
+                    row_text += f"[{fret}]" if i == self.current_row else f" {fret} "
                 else:
                     row_text += f"{fret}"
 
             # Update the label for the current string
             self.labels[i].config(
-                text=row_text,
-                bg="white",
+                text=row_text.strip(),
+                bg="white" if i != self.current_row else "lightblue",
                 fg="black"
             )
 
@@ -89,3 +89,4 @@ class GuitarTabCreator:
 if __name__ == "__main__":
     tab_creator = GuitarTabCreator()
     tab_creator.run()
+
